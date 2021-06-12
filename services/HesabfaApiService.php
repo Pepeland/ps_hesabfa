@@ -1,7 +1,7 @@
 <?php
 
 
-class CustomerService
+class HesabfaApiService
 {
     private static $instance = null;
 
@@ -12,18 +12,7 @@ class CustomerService
     public static function getInstance()
     {
         if (self::$instance == null)
-            self::$instance = new CustomerService();
+            self::$instance = new HesabfaApiService();
         return self::$instance;
     }
-
-    public function addOrUpdateCustomer(ApiContact $contact)
-    {
-
-    }
-
-    public function deleteCustomer(ApiContact $contact) {
-
-    }
-
-
 }
