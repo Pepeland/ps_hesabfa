@@ -17,9 +17,7 @@ class ApiItem
     public $tag;
     public $active;
 
-    public function __construct($code, $name)
+    public function __construct()
     {
-        $this->code = $code;
-        $this->name = $name;
     }
 }

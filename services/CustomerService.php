@@ -1,7 +1,13 @@
 <?php
 
+interface ICustomerService {
+    public function addOrUpdateCustomer(ApiContact $contact);
+    public function deleteCustomer(ApiContact $contact);
+    public function addContactRelationBetweenHesabfaAndPs(ApiContact $contact);
+    public function deleteContactRelationBetweenHesabfaAndPs(ApiContact $contact);
+}
 
-class CustomerService
+class CustomerService implements ICustomerService
 {
     private static $instance = null;
 
@@ -26,4 +32,13 @@ class CustomerService
     }
 
 
+    public function addContactRelationBetweenHesabfaAndPs(ApiContact $contact)
+    {
+
+    }
+
+    public function deleteContactRelationBetweenHesabfaAndPs(ApiContact $contact)
+    {
+
+    }
 }

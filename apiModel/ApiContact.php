@@ -23,9 +23,7 @@ class ApiContact
     public $website;
     public $tag;
 
-    public function __construct($code, $name)
+    public function __construct()
     {
-        $this->code = $code;
-        $this->name = $name;
     }
 }
