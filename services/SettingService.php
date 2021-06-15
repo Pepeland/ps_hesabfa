@@ -8,7 +8,9 @@ interface ISettingService
 
     public function setApiKeyAndToken($apiKey, $apiToken);
 
-    public function getApiKeyAndToken();
+    public function getApiKey();
+
+    public function getApiToken();
 
     public function testApiConnection($apiKey, $apiToken);
 
@@ -51,32 +53,33 @@ interface ISettingService
     public function setLastChangesLogId($value);
 
     public function getLastChangesLogId();
+
+    public function setDebugMode($value);
+
+    public function getDebugMode();
 }
 
 class SettingService implements ISettingService
 {
-    private static $instance = null;
     public static $pluginPrefix = "hesabfa_";
 
-    private function __construct()
-    {
-    }
+    private $storeSettingService;
 
-    public static function getInstance()
+    public function __construct(IStoreSettingService $storeSettingService)
     {
-        if (self::$instance == null)
-            self::$instance = new SettingService();
-        return self::$instance;
+        $this->$storeSettingService = $storeSettingService;
     }
 
     public function setSetting($key, $value)
     {
-        return Configuration::updateValue(self::$pluginPrefix . $key, $value);
+        $this->storeSettingService->setSetting(self::$pluginPrefix . $key, $value);
+        //Configuration::updateValue(self::$pluginPrefix . $key, $value);
     }
 
     public function getSetting($key)
     {
-        return Configuration::get(self::$pluginPrefix . $key);
+        return $this->storeSettingService->getSetting(self::$pluginPrefix . $key);
+        //return Configuration::get(self::$pluginPrefix . $key);
     }
 
     public function setApiKeyAndToken($apiKey, $apiToken)
@@ -85,10 +88,14 @@ class SettingService implements ISettingService
         $this->setSetting("apiToken", $apiToken);
     }
 
-    public function getApiKeyAndToken()
+    public function getApiKey()
     {
-        return array("apiKey" => $this->getSetting("apiKey"),
-            "apiToken" => $this->getSetting("apiToken"));
+        return $this->getSetting("apiKey");
+    }
+
+    public function getApiToken()
+    {
+        return $this->getSetting("apiToken");
     }
 
     public function testApiConnection($apiKey, $apiToken)
@@ -194,5 +201,15 @@ class SettingService implements ISettingService
     public function getLastChangesLogId()
     {
         return $this->getSetting("lastChangesLogId");
+    }
+
+    public function setDebugMode($value)
+    {
+        $this->setSetting("debugMode", $value);
+    }
+
+    public function getDebugMode()
+    {
+        return $this->getSetting("debugMode");
     }
 }

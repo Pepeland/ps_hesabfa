@@ -4,4 +4,7 @@
 class ReceiptService
 {
 
+    public function __construct()
+    {
+    }
 }
