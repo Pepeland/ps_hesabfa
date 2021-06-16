@@ -32,7 +32,7 @@
 	</p>
 	<br />
 	<p>
-		{l s='This module will boost your sales!' mod='ps_hesabfa'}
+		{l s='dskjflksdjfklsdjfkl' mod='ps_hesabfa'}
 	</p>
 </div>
 

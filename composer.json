@@ -1,0 +1,13 @@
+{
+  "name": "hamid/ps_hesabfa",
+  "description": "...",
+  "autoload": {
+    "psr-4": {
+      "ps_hesabfa\\Controller\\": "controllers/"
+    }
+  },
+  "config": {
+    "prepend-autoloader": false
+  },
+  "type": "prestashop-module"
+}

@@ -32,6 +32,15 @@ class Ps_hesabfa extends Module
 {
     protected $config_form = false;
 
+    public $tabs = [
+        [
+            'name' => 'Hesabfa Import and Export', // One name for all langs
+            'class_name' => 'ImportExport',
+            'visible' => true,
+            'parent_class_name' => 'AdminParentOrders',
+        ],
+    ];
+
     public function __construct()
     {
         $this->name = 'ps_hesabfa';

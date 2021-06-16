@@ -1,0 +1,5 @@
+ps_hesabfa_rout:
+  path: ps_hesabfa/importexport
+  methods: [GET]
+  defaults:
+    _controller: 'ps_hesabfa\Controller\ImportExportController::importExportAction'
