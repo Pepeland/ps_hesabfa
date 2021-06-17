@@ -4,7 +4,7 @@ namespace ps_hesabfa\Controller;
 
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 
-class ImportExportController extends FrameworkBundleAdminController
+class AdminMenu3 extends FrameworkBundleAdminController
 {
 
     // you can use symfony DI to inject services
