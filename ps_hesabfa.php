@@ -32,15 +32,6 @@ class Ps_hesabfa extends Module
 {
     protected $config_form = false;
 
-//    public $tabs = [
-//        [
-//            'name' => 'Hesabfa Import and Export', // One name for all langs
-//            'class_name' => 'ImportExportController',
-//            'visible' => true,
-//            'parent_class_name' => 'DEFAULT',
-//        ],
-//    ];
-
     public function __construct()
     {
         $this->name = 'ps_hesabfa';
@@ -82,8 +73,8 @@ class Ps_hesabfa extends Module
             $this->registerHook('actionPaymentConfirmation') &&
             $this->registerHook('actionProductAdd') &&
             $this->registerHook('actionProductDelete') &&
-            $this->registerHook('actionProductUpdate') &&
-            $this->installTabs();
+            $this->registerHook('actionProductUpdate');
+
     }
 
     public function uninstall()
@@ -92,15 +83,14 @@ class Ps_hesabfa extends Module
 
         include(dirname(__FILE__) . '/sql/uninstall.php');
 
-        return parent::uninstall() &&
-            $this->uninstallTabs();
+        return parent::uninstall();
+
     }
 
     private function installTabs()
     {
         $tab = new Tab();
-        $tab->class_name = 'AdminMenu1';
-        $tab->route_name = 'route_admin_menu1';
+        $tab->class_name = 'AdminMenu1Controller';
         $tab->name = array();
         foreach (Language::getLanguages() as $lang) {
             $tab->name[$lang['id_lang']] = $this->trans('Hesabfa', array(), 'Modules.ps_hesabfa.Admin', $lang['locale']);
@@ -111,8 +101,7 @@ class Ps_hesabfa extends Module
 
 
         $tab2 = new Tab();
-        $tab2->class_name = 'AdminMenu2';
-        $tab2->route_name = 'route_admin_menu2';
+        $tab2->class_name = 'AdminMenu2Controller';
         $tab2->name = array();
         foreach (Language::getLanguages() as $lang) {
             $tab2->name[$lang['id_lang']] = $this->trans('Hesabfa2', array(), 'Modules.ps_hesabfa.Admin', $lang['locale']);
@@ -126,13 +115,13 @@ class Ps_hesabfa extends Module
 
     private function uninstallTabs()
     {
-        $tabId = (int)Tab::getIdFromClassName('AdminMenu1');
+        $tabId = (int)Tab::getIdFromClassName('AdminMenu1Controller');
         if ($tabId) {
             $tab = new Tab($tabId);
             $tab->delete();
         }
 
-        $tab2Id = (int)Tab::getIdFromClassName('AdminMenu2');
+        $tab2Id = (int)Tab::getIdFromClassName('AdminMenu2Controller');
         if ($tab2Id) {
             $tab2 = new Tab($tab2Id);
             $tab2->delete();
@@ -142,14 +131,13 @@ class Ps_hesabfa extends Module
 
     public function enable($force_all = false)
     {
-        return parent::enable($force_all)
-            && $this->installTabs();
+        return parent::enable($force_all);
+
     }
 
     public function disable($force_all = false)
     {
-        return parent::disable($force_all)
-            && $this->uninstallTabs();
+        return parent::disable($force_all);
     }
 
     /**
@@ -269,7 +257,6 @@ class Ps_hesabfa extends Module
     protected function postProcess()
     {
         $form_values = $this->getConfigFormValues();
-
         foreach (array_keys($form_values) as $key) {
             Configuration::updateValue($key, Tools::getValue($key));
         }
