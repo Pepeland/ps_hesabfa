@@ -83,7 +83,7 @@ class Ps_hesabfa extends Module
             $this->registerHook('actionProductAdd') &&
             $this->registerHook('actionProductDelete') &&
             $this->registerHook('actionProductUpdate') &&
-            $this->CreateMymoduleAdminTabs();
+            $this->installTabs();
     }
 
     public function uninstall()
@@ -93,106 +93,63 @@ class Ps_hesabfa extends Module
         include(dirname(__FILE__) . '/sql/uninstall.php');
 
         return parent::uninstall() &&
-            $this->uninstallTab();
+            $this->uninstallTabs();
     }
 
-    private function CreateMymoduleAdminTabs() {
-        $langs = Language::getLanguages();
-        $smarttab = new Tab();
-        $smarttab->class_name = "ImportExportController";
-        $smarttab->module = "";
-        $smarttab->id_parent = 0;
-        $smarttab->name = "Menu Test Hesabfa";
-        $smarttab->save();
-        $tab_id = $smarttab->id;
-        $subMenus = array(
-            array(
-                'class_name' => 'AdminMenu1',
-                'id_parent' => 15,
-                'module' => 'ps_hesabfa',
-                'name' => 'tabName1',
-            ),
-            array(
-                'class_name' => 'AdminMenu2',
-                'id_parent' => 15,
-                'module' => 'ps_hesabfa',
-                'name' => 'tabName2',
-            ),
-            array(
-                'class_name' => 'AdminMenu3',
-                'id_parent' => 15,
-                'module' => 'ps_hesabfa',
-                'name' => 'tabName3',
-            ),
-        );
-        foreach ($subMenus as $tab) {
-            $newtab = new Tab();
-            $newtab->class_name = $tab['class_name'];
-            $newtab->id_parent = $tab_id;
-            $newtab->module = $tab['module'];
-            $newtab->name = $tab['name'];
-            $newtab->save();
-        }
-        return true;
-    }
-
-    private function installTab()
+    private function installTabs()
     {
-        $tab = new Tab(1000);
-        $tab->active = 1;
-        $tab->class_name = 'ImportExportController';
-        // Only since 1.7.7, you can define a route name
-        $tab->route_name = 'ps_hesabfa_rout';
+        $tab = new Tab();
+        $tab->class_name = 'AdminMenu1';
+        $tab->route_name = 'route_admin_menu1';
         $tab->name = array();
         foreach (Language::getLanguages() as $lang) {
             $tab->name[$lang['id_lang']] = $this->trans('Hesabfa', array(), 'Modules.ps_hesabfa.Admin', $lang['locale']);
         }
         $tab->id_parent = (int) Tab::getIdFromClassName('CONFIGURE');
         $tab->module = '';
+        $tab->save();
 
-        return $tab->save();
-    }
 
-    private function installTab2()
-    {
-        $tab = new Tab(1001);
-        $tab->active = 1;
-        $tab->class_name = 'ImportExportController';
-        // Only since 1.7.7, you can define a route name
-        $tab->route_name = 'ps_hesabfa_rout';
-        $tab->name = array();
+        $tab2 = new Tab();
+        $tab2->class_name = 'AdminMenu2';
+        $tab2->route_name = 'route_admin_menu2';
+        $tab2->name = array();
         foreach (Language::getLanguages() as $lang) {
-            $tab->name[$lang['id_lang']] = $this->trans('Import Export Hesabfa', array(), 'Modules.ps_hesabfa.Admin', $lang['locale']);
+            $tab2->name[$lang['id_lang']] = $this->trans('Hesabfa2', array(), 'Modules.ps_hesabfa.Admin', $lang['locale']);
         }
-        $tab->id_parent = 1000;
-        $tab->module = $this->name;
+        $tab2->id_parent = $tab->id;
+        $tab2->module = '';
+        $tab2->save();
 
-        return $tab->save();
+        return true;
     }
 
-    private function uninstallTab()
+    private function uninstallTabs()
     {
-        $tabId = (int)Tab::getIdFromClassName('ImportExportController');
-        if (!$tabId) {
-            return true;
+        $tabId = (int)Tab::getIdFromClassName('AdminMenu1');
+        if ($tabId) {
+            $tab = new Tab($tabId);
+            $tab->delete();
         }
 
-        $tab = new Tab($tabId);
-
-        return $tab->delete();
+        $tab2Id = (int)Tab::getIdFromClassName('AdminMenu2');
+        if ($tab2Id) {
+            $tab2 = new Tab($tab2Id);
+            $tab2->delete();
+        }
+        return true;
     }
 
     public function enable($force_all = false)
     {
         return parent::enable($force_all)
-            && $this->installTab()
-            && $this->installTab2();
+            && $this->installTabs();
     }
 
     public function disable($force_all = false)
     {
         return parent::disable($force_all)
-            && $this->uninstallTab();
+            && $this->uninstallTabs();
     }
 
     /**
